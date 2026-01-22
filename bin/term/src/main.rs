@@ -1,9 +1,10 @@
-use std::io::{self, Write};
+use std::io::{self, Write, Read};
+use std::fs::File;
 use std::process::Command;
 use std::path::Path;
 
 fn main() {
-    println!("--- MircoOS Term v0.3 ---");
+    println!("--- MircoOS Term v0.1 ---");
 
     let path_dirs = ["/bin", "/sbin", "/usr/bin", "/usr/sbin"];
 
@@ -29,7 +30,8 @@ fn main() {
         if cmd_name == "exit" {
             break;
         } else if cmd_name == "clear" {
-            println!("\033[H\033[2J");
+            print!("{esc}[2J{esc}[H", esc = 27 as char);
+            io::stdout().flush().expect("flush failed");
             continue;
         } else if cmd_name == "gtd" {
             if !args.is_empty() {
@@ -38,6 +40,19 @@ fn main() {
                 }
             } else {
                 println!("gtd: missing path");
+            }
+            continue;
+        } else if cmd_name == "help" || cmd_name == "commands" {
+            match File::open("/etc/help.txt") {
+                Ok(mut file) => {
+                    let mut content = String::new();
+                    if let Ok(_) = file.read_to_string(&mut content) {
+                        println!("{}", content);
+                    } else {
+                        println!("term: error reading help file.");
+                    }
+                }
+                Err(_) => println!("term: help file not found in /etc/help.txt"),
             }
             continue;
         }
