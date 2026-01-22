@@ -1,8 +1,6 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
-#include <vector>
-#include <cstring> // Для strcmp
 
 namespace fs = std::filesystem;
 
