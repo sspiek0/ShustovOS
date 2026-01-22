@@ -25,9 +25,23 @@ fn main() {
         let cmd_name = parts[0];
         let args = &parts[1..];
 
+
         if cmd_name == "exit" {
             break;
+        } else if cmd_name == "clear" {
+            println!("\033[H\033[2J");
+            continue;
+        } else if cmd_name == "gtd" {
+            if !args.is_empty() {
+                if let Err(e) = std::env::set_current_dir(args[0]) {
+                    println!("gtd: error: {}", e);
+                }
+            } else {
+                println!("gtd: missing path");
+            }
+            continue;
         }
+
 
         let mut target_path = cmd_name.to_string();
 
