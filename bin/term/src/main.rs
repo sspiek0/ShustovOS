@@ -9,7 +9,8 @@ fn main() {
     let path_dirs = ["/bin", "/sbin", "/usr/bin", "/usr/sbin"];
 
     loop {
-        print!("term> ");
+        let current_dir = std::env::current_dir().unwrap();
+        print!("term {}> ", current_dir.display());
         io::stdout().flush().expect("term: std error!");
 
         let mut input = String::new();
@@ -26,7 +27,6 @@ fn main() {
         let cmd_name = parts[0];
         let args = &parts[1..];
 
-
         if cmd_name == "exit" {
             break;
         } else if cmd_name == "clear" {
@@ -42,6 +42,9 @@ fn main() {
                 println!("gtd: missing path");
             }
             continue;
+        } else if cmd_name == "pcd" {
+            println!("{}", current_dir.display());
+            continue;
         } else if cmd_name == "help" || cmd_name == "commands" {
             match File::open("/etc/help.txt") {
                 Ok(mut file) => {
@@ -56,7 +59,6 @@ fn main() {
             }
             continue;
         }
-
 
         let mut target_path = cmd_name.to_string();
 
