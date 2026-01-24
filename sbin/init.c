@@ -9,7 +9,7 @@ int main() {
     mount("sysfs", "/sys", "sysfs", 0, NULL);
     mount("devtmpfs", "/dev", "devtmpfs", 0, NULL);
 
-    printf("--- MircoOS Initialized ---\n");
+    printf("--- MicroOS Initialized ---\n");
 
     while(1) {
         pid_t pid = fork();

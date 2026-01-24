@@ -4,7 +4,7 @@ use std::process::Command;
 use std::path::Path;
 
 fn main() {
-    println!("--- MircoOS Term v0.2 ---");
+    println!("--- MicroOS Term v0.2 ---");
 
     let path_dirs = ["/bin", "/sbin", "/usr/bin", "/usr/sbin"];
 
