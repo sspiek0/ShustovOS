@@ -1,8 +1,8 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
-#include <sys/ioctl.h> // ДЛЯ МАГИИ ШИРИНЫ (Linux/Unix)
-#include <unistd.h>    // ДЛЯ STDOUT_FILENO
+#include <sys/ioctl.h>
+#include <unistd.h> 
 
 namespace fs = std::filesystem;
 

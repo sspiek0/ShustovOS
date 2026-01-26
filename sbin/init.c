@@ -17,7 +17,7 @@ int main() {
         if (pid == 0) {
             printf("[INIT]: initialising term");
             char *args[] = {"/bin/term", NULL};
-            printf("\033[H\033[2J");
+            printf("--MicroOS v0.1 initialised--");
             execv("/bin/term", args);
             exit(1);
         } else {
