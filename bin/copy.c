@@ -3,8 +3,8 @@
 int main(int argc, char* argv[]) {
     if (argc == 2) {
         char* filename = argv[1];
-        FILE *fp = fopen("/etc/buffer", "w");
-        FILE *fp2 = fopen("/etc/copy_filename.txt", "w");
+        FILE *fp = fopen("/tmp/buffer", "w");
+        FILE *fp2 = fopen("/tmp/copy_filename.txt", "w");
         if (!fp || !fp2) {
             perror("Error while copying file");
             return 1;
