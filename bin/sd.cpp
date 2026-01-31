@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 
     if (argc > 1) {
         if (std::string(argv[1]) == "--help" || std::string(argv[1]) == "help") {
-            std::cout << "MicroOS sd v0.1" << std::endl;
+            std::cout << "ShustovOS sd v0.1" << std::endl;
             std::cout << "Usage: sd [dir] [-f]" << std::endl;
             return 0;
         }

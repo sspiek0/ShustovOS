@@ -10,61 +10,61 @@
 #include <string.h>
 
 int main() {
-    printf("[INIT]: mounting /proc\n");
+    printf("[ShustovOS]: mounting /proc\n");
     if (mount("proc", "/proc", "proc", 0, NULL) < 0) 
-        printf("[INIT]: error mounting /proc: %s\n", strerror(errno));
+        printf("[ShustovOS]: error mounting /proc: %s\n", strerror(errno));
 
-    printf("[INIT]: mounting /sys\n");
+    printf("[ShustovOS]: mounting /sys\n");
     if (mount("sysfs", "/sys", "sysfs", 0, NULL) < 0) 
-        printf("[INIT]: error mounting /sys: %s\n", strerror(errno));
+        printf("[ShustovOS]: error mounting /sys: %s\n", strerror(errno));
 
-    printf("[INIT]: mounting /dev\n");
+    printf("[ShustovOS]: mounting /dev\n");
     if (mount("devtmpfs", "/dev", "devtmpfs", 0, NULL) < 0) 
-        printf("[INIT]: error mounting /dev: %s\n", strerror(errno));
+        printf("[ShustovOS]: error mounting /dev: %s\n", strerror(errno));
     
     while(1) {
-        printf("[INIT]: forking for term...\n");
+        printf("[ShustovOS]: forking for term...\n");
         pid_t pid = fork();
 
         if (pid < 0) {
-            printf("[INIT]: fork failed: %s\n", strerror(errno));
+            printf("[ShustovOS]: fork failed: %s\n", strerror(errno));
             sleep(1);
             continue;
         }
 
         if (pid == 0) {
-            printf("[INIT]: child process started, setting sid\n");
+            printf("[ShustovOS]: child process started, setting sid\n");
             setsid();
 
-            printf("[INIT]: opening /dev/console\n");
+            printf("[ShustovOS]: opening /dev/console\n");
             int fd = open("/dev/console", O_RDWR); 
             if (fd >= 0) {
-                printf("[INIT]: console opened, setting controlling tty\n");
+                printf("[ShustovOS]: console opened, setting controlling tty\n");
                 ioctl(fd, TIOCSCTTY, 1);
                 dup2(fd, 0); dup2(fd, 1); dup2(fd, 2);
                 if (fd > 2) close(fd);
             } else {
-                printf("[INIT]: failed to open /dev/console: %s\n", strerror(errno));
+                printf("[ShustovOS]: failed to open /dev/console: %s\n", strerror(errno));
             }
 
-            printf("[INIT]: executing /bin/term\n");
+            printf("[ShustovOS]: executing /bin/term\n");
             char *args[] = {"/bin/term", NULL};
             execv("/bin/term", args);
             
-            printf("[INIT]: execv /bin/term failed: %s\n", strerror(errno));
+            printf("[ShustovOS]: execv /bin/term failed: %s\n", strerror(errno));
             exit(1);
         } else {
             int status;
-            printf("[INIT]: waiting for term (PID: %d)...\n", pid);
+            printf("[ShustovOS]: waiting for term (PID: %d)...\n", pid);
             waitpid(pid, &status, 0);
             
             if (WIFEXITED(status)) {
-                printf("[INIT]: term exited with status %d\n", WEXITSTATUS(status));
+                printf("[ShustovOS]: term exited with status %d\n", WEXITSTATUS(status));
             } else {
-                printf("[INIT]: term terminated abnormally\n");
+                printf("[ShustovOS]: term terminated abnormally\n");
             }
 
-            printf("[INIT]: shutting down...\n");
+            printf("[ShustovOS]: shutting down...\n");
             reboot(RB_POWER_OFF);
         }
     }

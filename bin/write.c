@@ -5,7 +5,7 @@
 int main (int argc, char* argv[]) {
     if (argc >= 2) {
         if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "help") == 0) {
-            printf("MicroOS write v0.2\n");
+            printf("ShustovOS write v0.2\n");
             printf("This tool allows you to write in file\n");
             printf("Usage: write [filename] [args], write --help/help\n");
             printf("Args: -a/--append - append lines to file (without - rewrite)\n");
@@ -24,7 +24,7 @@ int main (int argc, char* argv[]) {
             return 1;
         }
         char line[256];
-        printf("MicroOS write v0.2 Type 'q' to exit\n");
+        printf("ShustovOS write v0.2 Type 'q' to exit\n");
         if (append) {
             char buffer[256];
             FILE *fpr = fopen(filename, "r");

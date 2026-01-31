@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "help") == 0) {
-        printf("MicroOS del v0.2\n");
+        printf("ShustovOS del v0.2\n");
         printf("This tool allows you to delete file or folder\n");
         printf("Usage: del [filename/dirname] [args], del --help/help\n"); 
         printf("Args: -d/--dir - delete dir (without - file)\n");

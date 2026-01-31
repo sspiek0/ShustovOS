@@ -6,7 +6,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
 fn main() {
-    println!("--- MicroOS Term v0.2.1 ---");
+    println!("--- ShustovOS Term v0.2.1 ---");
 
     let path_dirs = ["/bin", "/sbin", "/usr/bin", "/usr/sbin"];
     
