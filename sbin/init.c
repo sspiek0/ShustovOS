@@ -15,7 +15,7 @@ int main() {
     mount("sysfs", "/sys", "sysfs", 0, NULL);
     printf("[INIT]: mounting /dev\n");
     mount("devtmpfs", "/dev", "devtmpfs", 0, NULL);
-
+    
     while(1) {
         pid_t pid = fork();
         if (pid == 0) {

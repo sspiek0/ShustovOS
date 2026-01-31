@@ -90,6 +90,8 @@ int main(int argc, char* argv[]) {
         free(buf1);
         free(allocated_path);
         return 0;
+    } else {
+        fprintf(stderr, "paste: path [filename]\n");
+        return 1;
     }
-    return 0;
 }

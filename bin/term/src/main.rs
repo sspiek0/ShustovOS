@@ -9,8 +9,7 @@ fn main() {
     println!("--- MicroOS Term v0.2.1 ---");
 
     let path_dirs = ["/bin", "/sbin", "/usr/bin", "/usr/sbin"];
-
-    // Настройка сигнала
+    
     let interrupted = Arc::new(AtomicBool::new(false));
     let i = Arc::clone(&interrupted);
     ctrlc::set_handler(move || {
