@@ -23,7 +23,7 @@ int main() {
         printf("[ShustovOS]: error mounting /dev: %s\n", strerror(errno));
     
     while(1) {
-        printf("[ShustovOS]: forking for term...\n");
+        printf("[ShustovOS]: forking for greeter.py...\n");
         pid_t pid = fork();
 
         if (pid < 0) {
@@ -47,21 +47,21 @@ int main() {
                 printf("[ShustovOS]: failed to open /dev/console: %s\n", strerror(errno));
             }
 
-            printf("[ShustovOS]: executing /bin/term\n");
-            char *args[] = {"/bin/term", NULL};
-            execv("/bin/term", args);
-            
-            printf("[ShustovOS]: execv /bin/term failed: %s\n", strerror(errno));
+            printf("[ShustovOS]: executing /bin/greeter.py\n");
+            char *args[] = {"/usr/bin/python3.14", "/bin/greeter.py", NULL}; 
+            execv("/usr/bin/python3.14", args);
+
+            printf("[ShustovOS]: execv failed: %s\n", strerror(errno));
             exit(1);
         } else {
             int status;
-            printf("[ShustovOS]: waiting for term (PID: %d)...\n", pid);
+            printf("[ShustovOS]: waiting for greeter.py (PID: %d)...\n", pid);
             waitpid(pid, &status, 0);
             
             if (WIFEXITED(status)) {
-                printf("[ShustovOS]: term exited with status %d\n", WEXITSTATUS(status));
+                printf("[ShustovOS]: greeter.py exited with status %d\n", WEXITSTATUS(status));
             } else {
-                printf("[ShustovOS]: term terminated abnormally\n");
+                printf("[ShustovOS]: greeter.py greeter.pyinated abnormally\n");
             }
 
             printf("[ShustovOS]: shutting down...\n");
