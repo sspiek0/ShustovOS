@@ -6,34 +6,65 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/reboot.h>
-#include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 int main() {
     printf("[INIT]: mounting /proc\n");
-    mount("proc", "/proc", "proc", 0, NULL);
+    if (mount("proc", "/proc", "proc", 0, NULL) < 0) 
+        printf("[INIT]: error mounting /proc: %s\n", strerror(errno));
+
     printf("[INIT]: mounting /sys\n");
-    mount("sysfs", "/sys", "sysfs", 0, NULL);
+    if (mount("sysfs", "/sys", "sysfs", 0, NULL) < 0) 
+        printf("[INIT]: error mounting /sys: %s\n", strerror(errno));
+
     printf("[INIT]: mounting /dev\n");
-    mount("devtmpfs", "/dev", "devtmpfs", 0, NULL);
+    if (mount("devtmpfs", "/dev", "devtmpfs", 0, NULL) < 0) 
+        printf("[INIT]: error mounting /dev: %s\n", strerror(errno));
     
     while(1) {
+        printf("[INIT]: forking for term...\n");
         pid_t pid = fork();
+
+        if (pid < 0) {
+            printf("[INIT]: fork failed: %s\n", strerror(errno));
+            sleep(1);
+            continue;
+        }
+
         if (pid == 0) {
+            printf("[INIT]: child process started, setting sid\n");
             setsid();
+
+            printf("[INIT]: opening /dev/console\n");
             int fd = open("/dev/console", O_RDWR); 
             if (fd >= 0) {
+                printf("[INIT]: console opened, setting controlling tty\n");
                 ioctl(fd, TIOCSCTTY, 1);
                 dup2(fd, 0); dup2(fd, 1); dup2(fd, 2);
                 if (fd > 2) close(fd);
+            } else {
+                printf("[INIT]: failed to open /dev/console: %s\n", strerror(errno));
             }
 
+            printf("[INIT]: executing /bin/term\n");
             char *args[] = {"/bin/term", NULL};
             execv("/bin/term", args);
+            
+            printf("[INIT]: execv /bin/term failed: %s\n", strerror(errno));
             exit(1);
         } else {
             int status;
+            printf("[INIT]: waiting for term (PID: %d)...\n", pid);
             waitpid(pid, &status, 0);
-            printf("[INIT]: term exited, shutting down...\n");
+            
+            if (WIFEXITED(status)) {
+                printf("[INIT]: term exited with status %d\n", WEXITSTATUS(status));
+            } else {
+                printf("[INIT]: term terminated abnormally\n");
+            }
+
+            printf("[INIT]: shutting down...\n");
             reboot(RB_POWER_OFF);
         }
     }
